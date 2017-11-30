@@ -30,6 +30,7 @@ type SiteAction struct {
 }
 
 type CreateSiteOutput struct {
+	// If success:
 	Name                string            `json:"name"`
 	ConfigurationSource string            `json:"configuration-source"` // e.g. "internal-json"
 	CreatedAt           string            `json:"created"`              // e.g. "2017-11-30 14:45:20.943849"
@@ -40,6 +41,11 @@ type CreateSiteOutput struct {
 	Configuration       SiteConfiguration `json:"configuration"`
 	CName               string            `json:"cname"`
 	// TODO: statistics, throughput, requests
+
+	// If failure:
+	Result  string `json:"result"`
+	Message string `json:"message"`
+	Error   string `json:"error"`
 }
 
 func (config *Config) CreateSite(siteName string, newConfig SiteConfiguration) (*CreateSiteOutput, error) {
@@ -80,6 +86,10 @@ func (config *Config) CreateSite(siteName string, newConfig SiteConfiguration) (
 	err = json.NewDecoder(response.Body).Decode(&output)
 	if err != nil {
 		return nil, fmt.Errorf("Error from Decode: %s", err)
+	}
+
+	if output.Result == "failure" {
+		return nil, fmt.Errorf("Got failure with message: %s", output.Message)
 	}
 
 	return &output, nil
