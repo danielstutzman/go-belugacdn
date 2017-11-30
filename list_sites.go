@@ -3,6 +3,7 @@ package belugacdn
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -34,6 +35,14 @@ func (config *Config) ListSites() (*ListSitesOutput, error) {
 		return nil, fmt.Errorf("Error from client.Do: %s", err)
 	}
 	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		body, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			return nil, fmt.Errorf("Error from ReadAll: %s", err)
+		}
+		return nil, fmt.Errorf("Non-OK from API: %s", body)
+	}
 
 	output := ListSitesOutput{}
 	err = json.NewDecoder(response.Body).Decode(&output)
