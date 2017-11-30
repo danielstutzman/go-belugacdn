@@ -14,8 +14,19 @@ type CreateSiteInput struct {
 }
 
 type SiteConfiguration struct {
-	Origin    string   `json:"origin"`
-	Hostnames []string `json:"hostnames"`
+	Origin    string     `json:"origin"`
+	Hostnames []string   `json:"hostnames"`
+	Rules     []SiteRule `json:"rules"`
+}
+
+type SiteRule struct {
+	Paths   []string     `json:"paths"`
+	Actions []SiteAction `json:"actions"`
+}
+
+type SiteAction struct {
+	Action string `json:"action"`
+	Scheme string `json:"scheme"`
 }
 
 type CreateSiteOutput struct {
