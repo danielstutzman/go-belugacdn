@@ -3,10 +3,12 @@ package main
 import (
 	"flag"
 	"log"
+
+	"github.com/danielstutzman/go-belugacdn"
 )
 
 func main() {
-	config := Config{}
+	config := belugacdn.Config{}
 	flag.StringVar(&config.Username, "username", "", "Username for BelugaCDN")
 	flag.StringVar(&config.Password, "password", "", "Password for BelugaCDN")
 	flag.Parse()
@@ -18,7 +20,7 @@ func main() {
 		log.Fatalf("Missing -password")
 	}
 
-	if false {
+	if true {
 		sites, err := config.ListSites()
 		if err != nil {
 			log.Fatalf("Error from ListSites: %s", err)
@@ -27,8 +29,8 @@ func main() {
 	}
 
 	if false {
-		site, err := config.CreateSite(CreateSiteInput{
-			Configuration: SiteConfiguration{
+		site, err := config.CreateSite(belugacdn.CreateSiteInput{
+			Configuration: belugacdn.SiteConfiguration{
 				Origin:    "origin-images.yoursite.com",
 				Hostnames: []string{"images.yoursite.com"},
 			},

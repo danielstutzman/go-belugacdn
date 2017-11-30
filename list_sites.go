@@ -1,4 +1,4 @@
-package main
+package belugacdn
 
 import (
 	"encoding/json"
