@@ -51,7 +51,7 @@ func (config *Config) CreateSite(input CreateSiteInput) (*CreateSiteOutput, erro
 
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, fmt.Errorf("Error from http.Get: %s", err)
+		return nil, fmt.Errorf("Error from client.Do: %s", err)
 	}
 	defer response.Body.Close()
 
