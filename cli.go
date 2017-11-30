@@ -18,5 +18,25 @@ func main() {
 		log.Fatalf("Missing -password")
 	}
 
-	config.list_sites()
+	if false {
+		sites, err := config.ListSites()
+		if err != nil {
+			log.Fatalf("Error from ListSites: %s", err)
+		}
+		log.Printf("Sites: %+v", sites)
+	}
+
+	if true {
+		site, err := config.CreateSite(CreateSiteInput{
+			Configuration: SiteConfiguration{
+				Origin:    "origin-images.yoursite.com",
+				Hostnames: []string{"images.yoursite.com"},
+			},
+			Name: "images.yoursite.com",
+		})
+		if err != nil {
+			log.Fatalf("Error from CreateSite: %s", err)
+		}
+		log.Printf("Site: %+v", site)
+	}
 }

@@ -1,18 +1,29 @@
 package main
 
 import (
-	"io/ioutil"
-	"log"
+	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
-func (config *Config) list_sites() {
+type ListSitesOutput struct {
+	Sites []ListSitesOutputSite `json:"sites"`
+}
+
+type ListSitesOutputSite struct {
+	Name          string            `json:"name"`
+	Created       string            `json:"created"`   // e.g. 2016-06-29 16:01:54.836804
+	DomainId      int               `json:"domain_id"` // e.g. 1234
+	Configuration SiteConfiguration `json:"configuration"`
+}
+
+func (config *Config) ListSites() (*ListSitesOutput, error) {
 	client := &http.Client{}
 
 	request, err := http.NewRequest(http.MethodGet,
 		"https://api.belugacdn.com/api/cdn/v2/sites", nil)
 	if err != nil {
-		log.Fatalf("Error from NewRequest: %s", err)
+		return nil, fmt.Errorf("Error from NewRequest: %s", err)
 	}
 
 	request.SetBasicAuth(config.Username, config.Password)
@@ -20,14 +31,15 @@ func (config *Config) list_sites() {
 
 	response, err := client.Do(request)
 	if err != nil {
-		log.Fatalf("Error from http.Get: %s", err)
+		return nil, fmt.Errorf("Error from http.Get: %s", err)
 	}
 	defer response.Body.Close()
 
-	body, err := ioutil.ReadAll(response.Body)
+	output := ListSitesOutput{}
+	err = json.NewDecoder(response.Body).Decode(&output)
 	if err != nil {
-		log.Fatalf("Error from ReadAll: %s", err)
+		return nil, fmt.Errorf("Error from Decode: %s", err)
 	}
 
-	log.Printf("Got body: %s", body)
+	return &output, nil
 }
