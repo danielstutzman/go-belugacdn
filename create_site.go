@@ -45,7 +45,7 @@ type CreateSiteOutput struct {
 func (config *Config) CreateSite(siteName string, newConfig SiteConfiguration) (*CreateSiteOutput, error) {
 	client := &http.Client{}
 
-	input := CreateSiteInput{Configuration: newConfig}
+	input := CreateSiteInput{Name: siteName, Configuration: newConfig}
 	inputJson, err := json.Marshal(input)
 	if err != nil {
 		return nil, fmt.Errorf("Error from json.Marshal: %s", err)
