@@ -40,7 +40,7 @@ func main() {
 		log.Printf("Site: %+v", site)
 	}
 
-	if true {
+	if false {
 		site, err := config.UpdateSite("example.danstutzman.com",
 			belugacdn.SiteConfiguration{
 				Origin:    "origin-images.yoursite.com",
@@ -57,5 +57,34 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error from DeleteSite: %s", err)
 		}
+	}
+
+	if false {
+		cert, err := config.CreateSslCertificate(
+			belugacdn.CreateSslCertificateInput{
+				Certificate: "cert",
+				Chain:       "chain",
+				Key:         "key",
+				Site:        "example.com",
+			})
+		if err != nil {
+			log.Fatalf("Error from CreateSslCertificate: %s", err)
+		}
+		log.Printf("Created cert: %+v", cert)
+	}
+
+	if false {
+		err := config.DeleteSslCertificate("monitoring.danstutzman.com")
+		if err != nil {
+			log.Fatalf("Error from DeleteSslCertificate: %s", err)
+		}
+	}
+
+	if false {
+		certs, err := config.ListSslCertificates()
+		if err != nil {
+			log.Fatalf("Error from ListSslCertificates: %s", err)
+		}
+		log.Printf("Certs: %+v", certs)
 	}
 }
