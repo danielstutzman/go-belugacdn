@@ -29,15 +29,25 @@ func main() {
 	}
 
 	if false {
-		site, err := config.CreateSite(belugacdn.CreateSiteInput{
-			Configuration: belugacdn.SiteConfiguration{
+		site, err := config.CreateSite("images.yoursite.com",
+			belugacdn.SiteConfiguration{
 				Origin:    "origin-images.yoursite.com",
 				Hostnames: []string{"images.yoursite.com"},
-			},
-			Name: "images.yoursite.com",
-		})
+			})
 		if err != nil {
 			log.Fatalf("Error from CreateSite: %s", err)
+		}
+		log.Printf("Site: %+v", site)
+	}
+
+	if true {
+		site, err := config.UpdateSite("example.danstutzman.com",
+			belugacdn.SiteConfiguration{
+				Origin:    "origin-images.yoursite.com",
+				Hostnames: []string{"images.yoursite.com"},
+			})
+		if err != nil {
+			log.Fatalf("Error from UpdateSite: %s", err)
 		}
 		log.Printf("Site: %+v", site)
 	}
