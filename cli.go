@@ -26,7 +26,7 @@ func main() {
 		log.Printf("Sites: %+v", sites)
 	}
 
-	if true {
+	if false {
 		site, err := config.CreateSite(CreateSiteInput{
 			Configuration: SiteConfiguration{
 				Origin:    "origin-images.yoursite.com",
@@ -38,5 +38,12 @@ func main() {
 			log.Fatalf("Error from CreateSite: %s", err)
 		}
 		log.Printf("Site: %+v", site)
+	}
+
+	if false {
+		err := config.DeleteSite("images.yoursite.com")
+		if err != nil {
+			log.Fatalf("Error from DeleteSite: %s", err)
+		}
 	}
 }
